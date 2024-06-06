@@ -1,0 +1,98 @@
+.transactions-area {
+	transform: translateY(220px);
+	margin: 0 auto;
+
+	.page-header {
+		justify-content: flex-end;
+		align-items: center;
+		display: flex;
+	}
+
+	.transaction-item-groupe {
+		color: white;
+		background-color: #0f101e;
+		padding: 15px;
+		border-radius: 5px;
+		margin-top: 30px;
+
+		.groupe-header {
+			align-items: center;
+			border-bottom: 1px solid #2b292a;
+			display: flex;
+			padding: 15px 0;
+			position: relative;
+			transition: all 0.2s;
+		}
+
+		.groupe-header > div {
+			flex: 1 1;
+			font-weight: 400;
+			font-size: 18px;
+		}
+
+		.groupe-item {
+			display: flex;
+			padding: 15px 0;
+			position: relative;
+			transition: all 0.2s;
+			border-bottom: 1px solid #2b292a;
+
+			.default-logo {
+				height: 40px;
+				width: 40px;
+
+				align-items: center;
+				border-radius: 50%;
+				display: flex;
+				font-size: 8px;
+				justify-content: center;
+			}
+
+			.token-details.send {
+				display: flex;
+				gap: 15px;
+				align-items: center;
+				justify-content: space-around;
+			}
+			svg {
+				width: 35px;
+				height: 35px;
+			}
+			img {
+				width: 40px;
+				height: 40px;
+				border-radius: 100px;
+			}
+		}
+
+		.groupe-item > div {
+			flex: 1 1;
+			font-size: 16px;
+			color: white;
+		}
+	}
+}
+
+@media (min-width: 1400px) {
+	.transactions-area {
+		max-width: 1340px !important;
+	}
+}
+
+@media (min-width: 1500px) {
+	.transactions-area {
+		max-width: 1440px !important;
+	}
+}
+
+@media (min-width: 1600px) {
+	.transactions-area {
+		max-width: 1540px !important;
+	}
+}
+
+@media (min-width: 1700px) {
+	.transactions-area {
+		max-width: 1600px !important;
+	}
+}

@@ -1,0 +1,171 @@
+.defi-area {
+	transform: translateY(220px);
+
+	margin: 0 auto;
+	.page-header {
+		justify-content: end;
+		align-items: center;
+		display: flex;
+	}
+
+	.summary-section {
+		.wallet-card {
+			margin-top: 10px;
+			border: 1px solid #163159;
+			border-radius: 15px;
+			margin: 30px 0;
+			padding: 30px;
+			transition: background 0.4s;
+			width: 100%;
+			text-align: center;
+
+			.heading {
+				color: white;
+				font-size: 18px;
+				font-weight: 500;
+			}
+
+			.big-value {
+				font-size: 1.3rem;
+				font-weight: 600;
+				color: white;
+			}
+		}
+	}
+
+	.summary-protocols {
+		display: flex;
+		flex-wrap: wrap;
+		margin-left: -15px;
+		margin-right: -15px;
+		color: white;
+		li {
+			align-items: center;
+			background: #04142c;
+			border-radius: 7px;
+			display: flex;
+			flex-grow: 1;
+			font-size: 0.8rem;
+			font-weight: 600;
+			margin: 10px 15px;
+			max-width: 17%;
+			padding: 15px;
+			width: 100%;
+
+			img {
+				margin-right: 12px;
+				max-width: 30px;
+			}
+
+			.protocol-title {
+				text-transform: capitalize;
+			}
+
+			.protocol-value {
+			}
+
+			.position-count {
+				color: #b1bbce;
+				font-size: 0.7rem;
+				font-weight: 400;
+			}
+		}
+	}
+
+	.summary-positions {
+		color: white;
+		.wallet-card {
+			border: 1px solid #163159;
+			border-radius: 15px;
+			margin: 30px 0;
+			padding: 30px;
+			transition: background 0.4s;
+			width: 100%;
+
+			.protocol-details {
+				align-items: center;
+				display: flex;
+				padding-bottom: 20px;
+
+				img {
+					border-radius: 100px;
+					margin-right: 10px;
+					max-width: 50px;
+				}
+
+				.protocol-title {
+					flex-grow: 1;
+					font-size: 1.3rem;
+					font-weight: 600;
+				}
+
+				.rewards-available {
+					background: #019552;
+					border-radius: 4px;
+					font-size: 17px;
+					margin-left: 10px;
+					padding: 6px 10px;
+					color: white;
+				}
+
+				.position-count {
+					color: #b1bbce;
+					font-size: 0.7rem;
+					font-weight: 400;
+				}
+			}
+
+			.defi-list {
+				.position-detail {
+					li {
+						align-items: center;
+						border-bottom: 1px solid #1d2b46;
+						display: flex;
+						padding: 15px 0;
+						position: relative;
+						transition: all 0.2s;
+
+						.default-logo {
+							height: 30px;
+							width: 30px;
+
+							align-items: center;
+							border-radius: 50%;
+							display: flex;
+							font-size: 20px;
+							justify-content: center;
+						}
+
+						.rewards-available {
+							background: #019552;
+							border-radius: 4px;
+							font-size: 0.7rem !important;
+							padding: 2px 5px;
+							position: absolute;
+							right: 0;
+						}
+					}
+
+					li > div:first-child {
+						flex: none;
+						width: 50px;
+						margin-right: 10px;
+					}
+
+					li > div:not(:first-child) {
+						flex: 1 1;
+						font-weight: 500;
+					}
+
+					li > div:nth-child(2) {
+						flex: none !important;
+						width: 40%;
+					}
+				}
+			}
+		}
+	}
+	ul {
+		list-style: none;
+	}
+}

@@ -1,0 +1,29 @@
+.wallet-viewer-area {
+	padding-bottom: 340px;
+	min-height: 100vh;
+	padding-top: 140px;
+	transform: translateY(110px);
+	.viewer-warpper {
+		margin-bottom: 110px;
+		background: #0f101e;
+		border-radius: 10px;
+		padding: 50px;
+
+		input {
+			width: 50%;
+			background: rgba(255 255 255 / 7%);
+			display: block;
+			border: none;
+			padding: 15px 15px;
+			border-radius: 30px;
+			color: var(--tg-white);
+			line-height: 1;
+			height: 50px;
+		}
+	}
+}
+
+.portfolio-area {
+	padding-bottom: 340px;
+	padding-top: 140px;
+}
