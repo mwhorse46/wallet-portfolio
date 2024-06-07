@@ -20,9 +20,11 @@ const Breadcrumb = ({ title }: any) => {
 									<li className="breadcrumb-item">
 										<Link href="/">Dashboard</Link>
 									</li>
-									<li className="breadcrumb-item active" aria-current="page">
-										{title}
-									</li>
+									{title != "Dashboard" && (
+										<li className="breadcrumb-item active" aria-current="page">
+											{title}
+										</li>
+									)}									
 								</ol>
 							</nav>
 						</div>

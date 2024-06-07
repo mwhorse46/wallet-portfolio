@@ -16,28 +16,28 @@ const FaqArea = () => {
                            <div className="col-lg-3">
                               <div className="feature-card mw-100">                  
                                  <div className="feature-card-details">
-                                    <h4 className="feature-card-title">Favourites</h4>
+                                    <h4 className="feature-card-title">Temp</h4>
                                  </div>
                               </div>
                            </div>
                            <div className="col-lg-3">
                               <div className="feature-card mw-100">                  
                                  <div className="feature-card-details">
-                                    <h4 className="feature-card-title">Wallet tracker</h4>
+                                    <h4 className="feature-card-title">Loss calcuator</h4>
                                  </div>
                               </div>
                            </div>
                            <div className="col-lg-3">
                               <div className="feature-card mw-100">                  
                                  <div className="feature-card-details">
-                                    <h4 className="feature-card-title">Token alerts</h4>
+                                    <h4 className="feature-card-title">Asset Marketcaps</h4>
                                  </div>
                               </div>
                            </div>
                            <div className="col-lg-3">
                               <div className="feature-card mw-100">                  
                                  <div className="feature-card-details">
-                                    <h4 className="feature-card-title">Airdrop alerts</h4>
+                                    <h4 className="feature-card-title">Stock to flow</h4>
                                  </div>
                               </div>
                            </div>

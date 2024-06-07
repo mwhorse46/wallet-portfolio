@@ -18,7 +18,7 @@ const Hero = () => {
          </div>
 
          <div className="container">
-            <div className="hero-style1">
+            <div className="hero-style1 pt-5">
                <div className="feature-card mw-100">                  
                   <div className="feature-card-details">
                      <h4 className="feature-card-title">Market stats & trending</h4>
