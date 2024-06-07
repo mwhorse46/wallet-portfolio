@@ -36,27 +36,27 @@ const FooterOne = () => {
                      <ul className="footer-menu-list">
                         <li>
                            <Link href="index.html">
-                              HOME
+                              DASHBOARD
                            </Link>
                         </li>
                         <li>
                            <Link href="#">
-                              OUR PROJECTS
+                              PORTFOLIO
                            </Link>
                         </li>
                         <li>
                            <Link href="#">
-                              OUR TEAM
+                              CRYPTOCURRENCIES
                            </Link>
                         </li>
                         <li>
                            <Link href="#">
-                              NEWS FAQ
+                              NEWS
                            </Link>
                         </li>
                         <li>
                            <Link href="#">
-                              DOCUMENTS
+                              LEARN
                            </Link>
                         </li>
                      </ul>

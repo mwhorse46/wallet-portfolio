@@ -19,48 +19,62 @@ const Hero = () => {
 
          <div className="container">
             <div className="hero-style1">
-               <div className="row flex-row-reverse">
-                  <div className="col-lg-3">
-                     <div className="hero-thumb alltuchtopdown">
-                        <Image src={hero_thumb} alt="img" />
-                     </div>
+               <div className="feature-card mw-100">                  
+                  <div className="feature-card-details">
+                     <h4 className="feature-card-title">Market stats & trending</h4>
                   </div>
-                  <div className="col-lg-9">
-                     <h1 className="hero-title">Putting Your Money in Product Backed Projects</h1>
-                     <div className="btn-wrap">
-                        <Link href="/contact" className="btn btn2" >
-                           Purchase a Token
-                        </Link>
-                        <Link href="/blog" className="btn btn-two" >
-                           Read  Documents
-                        </Link>
-                     </div>
-                  </div>
-
                </div>
             </div>
-            <div className="hero-countdown-wrap">
-               <h2 className="hero-countdown-wrap-title">ICO will start in..</h2>
-               <ul className="skill-feature_list">
-                  <li><span>Value</span> of technology invested</li>
-                  <li><span>Private</span> sale</li>
-                  <li><h4>ICO</h4></li>
-               </ul>
-               <div className="skill-feature">
-                  <div className="progress">
-                     <div className="progress-bar" style={{ width: "80%" }}>
+            <div className="row">
+               <div className="col-lg-3">
+                  <div className="feature-card mw-100">                  
+                     <div className="feature-card-details">
+                        <h4 className="feature-card-title">Top gainer</h4>
                      </div>
                   </div>
-                  <div className="progress-value-max">100 Min $</div>
                </div>
-               <ul className="skill-feature_list style2">
-                  <li>7.75 Min</li>
-                  <li>1.5 Min</li>
-                  <li>140,000 $ chosen</li>
-               </ul>
-               <div className="banner-countdown-wrap">
-                  <div className="coming-time" data-countdown="2024/8/29">
-                  <CountdownClock />
+               <div className="col-lg-6">
+                  <div className="feature-card mw-100">                  
+                     <div className="feature-card-details">
+                        <h4 className="feature-card-title">Ads</h4>
+                     </div>
+                  </div>
+               </div>
+               <div className="col-lg-3">
+                  <div className="feature-card mw-100">                  
+                     <div className="feature-card-details">
+                        <h4 className="feature-card-title">Trending</h4>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div className="row mt-3">
+               <div className="col-lg-3">
+                  <div className="feature-card mw-100">                  
+                     <div className="feature-card-details">
+                        <h4 className="feature-card-title">Favourites</h4>
+                     </div>
+                  </div>
+               </div>
+               <div className="col-lg-3">
+                  <div className="feature-card mw-100">                  
+                     <div className="feature-card-details">
+                        <h4 className="feature-card-title">Wallet tracker</h4>
+                     </div>
+                  </div>
+               </div>
+               <div className="col-lg-3">
+                  <div className="feature-card mw-100">                  
+                     <div className="feature-card-details">
+                        <h4 className="feature-card-title">Token alerts</h4>
+                     </div>
+                  </div>
+               </div>
+               <div className="col-lg-3">
+                  <div className="feature-card mw-100">                  
+                     <div className="feature-card-details">
+                        <h4 className="feature-card-title">Airdrop alerts</h4>
+                     </div>
                   </div>
                </div>
             </div>

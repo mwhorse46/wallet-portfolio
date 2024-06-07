@@ -16,13 +16,6 @@ const HomeOne = () => {
     <div className="home-purple-gradient">
       <HeaderOne />
       <Hero />
-      <Brand />
-      <ChooseArea />
-      <IntroArea />
-      <RoadMap />
-      <InvestArea />
-      <Team />
-      <PartnerArea />
       <EventArea />
       <FaqArea />
       <FooterOne />
