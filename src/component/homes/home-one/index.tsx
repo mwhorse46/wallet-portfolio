@@ -14,7 +14,7 @@ import Breadcrumb from "@/component/common/Breadcrumb"
 
 const HomeOne = () => {
   return (
-    <div className="home-purple-gradient">
+    <div className="home-purple-gradient" id="root">
       <HeaderOne />
       <Breadcrumb title="Dashboard" />
       <Hero />

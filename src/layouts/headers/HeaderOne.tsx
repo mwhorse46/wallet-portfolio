@@ -9,6 +9,7 @@ import HeaderOffcanvas from "./Menu/HeaderOffcanvas";
 import { AppContext } from "@/hooks/AppContext";
 import logo_1 from "@/assets/img/logo/logo.png";
 import "../../styles/headerone.scss";
+import WalletLoginModal from "@/modals/WalletLoginModal";
 
 const HeaderOne = () => {
 	const { sticky } = UseSticky();
@@ -16,6 +17,7 @@ const HeaderOne = () => {
 	const [offCanvas, setOffCanvas] = useState<boolean>(false);
 	const { globalData, setGlobalData } = useContext(AppContext);
 	const [address, setAddress] = useState("");
+	const [isOpenLoginModal, setIsOpenLoginModal] = useState(false);
 
 	const handleInputChange = (e: any) => {
 		setAddress(e.target.value);
@@ -114,7 +116,7 @@ const HeaderOne = () => {
 													/>
 												</li>
 												<li className="header-login">
-													<Link className="btn2" href="/login">
+													<Link href={""} className="btn2" onClick={() => setIsOpenLoginModal(true)}>
 														LOGIN
 													</Link>
 												</li>
@@ -135,6 +137,7 @@ const HeaderOne = () => {
 			</header>
 			<Sidebar style={false} isActive={isActive} setIsActive={setIsActive} />
 			<HeaderOffcanvas offCanvas={offCanvas} setOffCanvas={setOffCanvas} />
+			<WalletLoginModal modalIsOpen={isOpenLoginModal} closeModal={() => setIsOpenLoginModal(false)} />
 		</>
 	);
 };
