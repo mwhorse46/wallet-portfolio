@@ -27,6 +27,8 @@ const walletList = [
 
 const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
   const [coinList, setCoinList] = useState([]);
+  const [searchNetwork, setSearchNetwork] = useState("");
+  const [selectCoin, setSelectCoin] = useState<any>({});
 
   useEffect(() => {
 		Modal.setAppElement(document.body); // Ensure this runs on client-side
@@ -39,6 +41,8 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
     loadCoins();
 	}, []);
 
+  console.log(selectCoin)
+
   return (
     <Modal
       isOpen={modalIsOpen}
@@ -50,13 +54,23 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
         &times;
       </button>
       <div style={{display: 'flex', width: '800px', height: '600px'}}>
-        <div style={{width: '45%', backgroundColor: '#0C0D1F', overflow: 'auto', padding: '20px'}}>
+        <div style={{width: '40%', backgroundColor: '#0C0D1F', overflow: 'auto', padding: '20px'}}>
           <div>
-            <input type="text" placeholder='NETWORK' style={{color: '#fff', backgroundColor: '#202136', border: 'none', padding: '5px'}}/>
+            <input 
+              type="text" 
+              placeholder='NETWORK' 
+              style={{color: '#fff', backgroundColor: '#202136', border: 'none', padding: '5px'}}
+              onChange={(e) => setSearchNetwork(e.target.value)}
+              value={searchNetwork}
+            />
           </div>
-          <div style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '10px 40px', marginTop: '20px'}}>
-            {coinList.map((token: any, index: number) => (
-              <div style={{borderRadius: '8px', border: '1px solid, #303552', width: '40%'}} key={index}>
+          <div style={{display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px 20px', marginTop: '20px'}}>
+            {coinList.filter((coin: any) => coin?.id?.toUpperCase().includes(searchNetwork.toUpperCase()) || coin?.symbol?.toUpperCase().includes(searchNetwork.toUpperCase()) || coin?.name?.toUpperCase().includes(searchNetwork.toUpperCase())).map((token: any, index: number) => (
+              <div 
+                key={index} 
+                className={`wallet-list-modal-coins-wrapper ${selectCoin?.id == token.id && 'active'}`}
+                onClick={() => setSelectCoin(token)}
+              >
                 <div style={{textAlign: 'center', marginTop: '10px'}}>
                   <img src={token.image} style={{width: '50px', height: '50px'}}/>
                 </div>
@@ -69,7 +83,12 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
         </div>
         <div style={{width: '60%', backgroundColor: '#131428', padding: '30px', overflow: 'auto'}}>
           <p style={{fontSize: '24px', fontWeight:'bold', color: 'white'}}>SELECT A WALLET</p>
-          <p style={{fontSize: '16px', fontWeight:'500', color: 'white'}}>ETHERIUM NETWORK</p>
+          <p style={{fontSize: '16px', fontWeight:'500', color: 'white'}}>
+            {selectCoin?.id?.toUpperCase()} NETWORK 
+            {selectCoin?.image && (
+              <img src={selectCoin?.image} style={{width: '50px', height: '50px', marginLeft: '30px'}}/>
+            )}            
+          </p>
           <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
             {walletList.map((wallet: any, index: number) => (
               <div style={{borderRadius: '8px', border: '1px solid, #303552', display: 'flex', textAlign: 'center', justifyContent: 'space-between', alignItems: 'center', padding: '10px'}} key={index}>

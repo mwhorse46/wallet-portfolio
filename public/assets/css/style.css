@@ -6543,3 +6543,14 @@ label {
   font-size: 20px;
   cursor: pointer;
 }
+
+.wallet-list-modal-coins-wrapper {
+  border-radius: 8px;
+  border: 1px solid #303552; 
+  width: 44%; 
+  cursor: pointer;
+}
+
+.wallet-list-modal-coins-wrapper:hover, .wallet-list-modal-coins-wrapper.active {
+  background-color: rgba(32, 33, 54, 0.8);
+}
