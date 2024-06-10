@@ -1,4 +1,5 @@
 import TokenLogo from '@/component/portfolio/tokenlogo';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 
@@ -16,17 +17,16 @@ const customStyles = {
 const walletList = [
   {
     'id': 'metamask', 
-    'image': () => import('@/assets/img/wallet/metamask.png')
+    'image': require('@/assets/img/wallet/metamask.png')
   }, 
   {
     'id': 'coinbase', 
-    'image': () => import('@/assets/img/wallet/coinbase.png')
+    'image': require('@/assets/img/wallet/coinbase.png')
   }, 
 ];
 
 const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
   const [coinList, setCoinList] = useState([]);
-  const [images, setImages] = useState({});
 
   useEffect(() => {
 		Modal.setAppElement(document.body); // Ensure this runs on client-side
@@ -37,15 +37,6 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
       setCoinList(coinList.coinList);
     };
     loadCoins();
-
-    walletList.forEach((wallet) => {
-      wallet.image().then((image) => {
-        setImages((prev) => ({
-          ...prev,
-          [wallet.id]: image.default,
-        }));
-      });
-    });
 	}, []);
 
   return (
@@ -81,12 +72,12 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
           <p style={{fontSize: '16px', fontWeight:'500', color: 'white'}}>ETHERIUM NETWORK</p>
           <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
             {walletList.map((wallet: any, index: number) => (
-              <div style={{borderRadius: '8px', border: '1px solid, #303552', display: 'flex', textAlign: 'center', justifyContent: 'space-between', alignItems: 'center', padding: '10px'}}>
+              <div style={{borderRadius: '8px', border: '1px solid, #303552', display: 'flex', textAlign: 'center', justifyContent: 'space-between', alignItems: 'center', padding: '10px'}} key={index}>
                 <p style={{textAlign: 'center', margin: 0}}>
                   { wallet.id.toUpperCase() }
                 </p>
                 <div style={{textAlign: 'center'}}>
-                  <img src={images[wallet.id]} style={{width: '50px', height: '50px'}}/>
+                  <Image src={wallet.image} style={{width: '50px', height: '50px'}} alt=""/>
                 </div>                
               </div>
             ))}
