@@ -60,7 +60,7 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
       const loadCoins = async () => {
         const response = await fetch(`/api/coin-lists`);
         const coinList: any = await response.json();
-        const coin = coinList.coinList.filter(c => c.name.toLowerCase() === selectCoin.name.toLowerCase() && c.symbol.toLowerCase() === selectCoin.symbol.toLowerCase());
+        const coin = coinList.coinList.filter((c: any) => c.name.toLowerCase() === selectCoin.name.toLowerCase() && c.symbol.toLowerCase() === selectCoin.symbol.toLowerCase());
         const possibleWallet: any[] = [];
         for (const coinIndividual of coin) {
           const responseDetail = await fetch(`/api/coin-detail?coinId=${coin ? coinIndividual.id : null}`);
