@@ -2,6 +2,7 @@ import TokenLogo from '@/component/portfolio/tokenlogo';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
+import { object } from 'yup';
 
 const customStyles = {
   content: {
@@ -17,11 +18,23 @@ const customStyles = {
 const walletList = [
   {
     'id': 'metamask', 
-    'image': require('@/assets/img/wallet/metamask.png')
+    'image': require('@/assets/img/wallet/metamask.png'),
+    'supportedCoins': ['ethereum'],
   }, 
   {
     'id': 'coinbase', 
-    'image': require('@/assets/img/wallet/coinbase.png')
+    'image': require('@/assets/img/wallet/coinbase.png'),
+    'supportedCoins': ['ethereum', 'bitcoin', 'solana', 'dogecoin', 'litecoin'],
+  }, 
+  {
+    'id': 'trustwallet', 
+    'image': require('@/assets/img/wallet/trustwallet.png'),
+    'supportedCoins': ['ethereum', 'tron', 'polygon', 'bitcoin'],
+  }, 
+  {
+    'id': 'exodus', 
+    'image': require('@/assets/img/wallet/exodus.png'),
+    'supportedCoins': ['ethereum', 'bitcoin', 'solana', 'cardano', 'avalanche', 'polygon', 'fantom'],
   }, 
 ];
 
@@ -29,6 +42,7 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
   const [coinList, setCoinList] = useState([]);
   const [searchNetwork, setSearchNetwork] = useState("");
   const [selectCoin, setSelectCoin] = useState<any>({});
+  const [selectWalletList, setSelectWalletList] = useState<any>(walletList);
 
   useEffect(() => {
 		Modal.setAppElement(document.body); // Ensure this runs on client-side
@@ -41,7 +55,30 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
     loadCoins();
 	}, []);
 
-  console.log(selectCoin)
+  useEffect(() => {
+		if (selectCoin.symbol) {
+      const loadCoins = async () => {
+        const response = await fetch(`/api/coin-lists`);
+        const coinList: any = await response.json();
+        const coin = coinList.coinList.filter(c => c.name.toLowerCase() === selectCoin.name.toLowerCase() && c.symbol.toLowerCase() === selectCoin.symbol.toLowerCase());
+        const possibleWallet: any[] = [];
+        for (const coinIndividual of coin) {
+          const responseDetail = await fetch(`/api/coin-detail?coinId=${coin ? coinIndividual.id : null}`);
+          const coinDetail: any = await responseDetail.json();
+          Object.keys(coinDetail.coinDetail.platforms).forEach(network => {
+            if (network == '') network = 'bitcoin';
+            for (const wallet of walletList) {
+              if ((wallet.supportedCoins.includes(network) || wallet.supportedCoins.includes(selectCoin.id)) && !possibleWallet.includes(wallet)) {
+                possibleWallet.push(wallet);
+              }
+            }
+          });
+        }        
+        setSelectWalletList(possibleWallet);
+      };
+      loadCoins();
+    }
+	}, [selectCoin]);
 
   return (
     <Modal
@@ -84,14 +121,14 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
         <div style={{width: '60%', backgroundColor: '#131428', padding: '30px', overflow: 'auto'}}>
           <p style={{fontSize: '24px', fontWeight:'bold', color: 'white'}}>SELECT A WALLET</p>
           <p style={{fontSize: '16px', fontWeight:'500', color: 'white'}}>
-            {selectCoin?.id?.toUpperCase()} NETWORK 
+            {selectCoin?.id?.toUpperCase()} 
             {selectCoin?.image && (
               <img src={selectCoin?.image} style={{width: '50px', height: '50px', marginLeft: '30px'}}/>
             )}            
           </p>
           <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-            {walletList.map((wallet: any, index: number) => (
-              <div style={{borderRadius: '8px', border: '1px solid, #303552', display: 'flex', textAlign: 'center', justifyContent: 'space-between', alignItems: 'center', padding: '10px'}} key={index}>
+            {selectWalletList.map((wallet: any, index: number) => (
+              <div className='wallet-list-modal-wallets-wrapper' key={index}>
                 <p style={{textAlign: 'center', margin: 0}}>
                   { wallet.id.toUpperCase() }
                 </p>

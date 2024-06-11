@@ -6551,6 +6551,17 @@ label {
   cursor: pointer;
 }
 
-.wallet-list-modal-coins-wrapper:hover, .wallet-list-modal-coins-wrapper.active {
+.wallet-list-modal-coins-wrapper:hover, .wallet-list-modal-wallets-wrapper:hover, .wallet-list-modal-coins-wrapper.active, .wallet-list-modal-wallets-wrapper.active {
   background-color: rgba(32, 33, 54, 0.8);
+}
+
+.wallet-list-modal-wallets-wrapper {
+  border-radius: 8px;
+  border: 1px solid #303552; 
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
 }
