@@ -108,20 +108,20 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
       // setWeb3(web3Instance);
 
       window.ethereum.request({ method: 'eth_requestAccounts' })
-        .then(accounts => {
+        .then((accounts: any) => {
           setGlobalData((prevData: any) => ({
             ...prevData,
-            accountIdFromLogin: accounts?[0]
+            accountIdFromLogin: accounts?.[0] ?? null
           }));
         })
         .catch(err => {
           console.log(err.message);
         });
 
-      window.ethereum.on('accountsChanged', (accounts) => {
+      window.ethereum.on('accountsChanged', (accounts: any) => {
         setGlobalData((prevData: any) => ({
           ...prevData,
-          accountIdFromLogin: accounts?[0]
+          accountIdFromLogin: accounts?.[0] ?? null
         }));
       });
     } else {
