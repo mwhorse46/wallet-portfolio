@@ -111,7 +111,7 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
         .then(accounts => {
           setGlobalData((prevData: any) => ({
             ...prevData,
-            accountIdFromLogin: accounts[0]
+            accountIdFromLogin: accounts?[0]
           }));
         })
         .catch(err => {
@@ -121,7 +121,7 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
       window.ethereum.on('accountsChanged', (accounts) => {
         setGlobalData((prevData: any) => ({
           ...prevData,
-          accountIdFromLogin: accounts[0]
+          accountIdFromLogin: accounts?[0]
         }));
       });
     } else {
