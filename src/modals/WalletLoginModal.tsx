@@ -1,8 +1,12 @@
-import TokenLogo from '@/component/portfolio/tokenlogo';
+import { AppContext } from '@/hooks/AppContext';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Modal from 'react-modal';
-import { object } from 'yup';
+import Web3 from 'web3';
+import WalletConnectClient from '@walletconnect/client';
+import QRCodeModal from '@walletconnect/qrcode-modal';
+import { CoinbaseWalletSDK } from "@coinbase/wallet-sdk";
+import MetaMaskSDK from '@metamask/sdk';
 
 const customStyles = {
   content: {
@@ -39,6 +43,7 @@ const walletList = [
 ];
 
 const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
+  const { globalData, setGlobalData } = useContext(AppContext);
   const [coinList, setCoinList] = useState([]);
   const [searchNetwork, setSearchNetwork] = useState("");
   const [selectCoin, setSelectCoin] = useState<any>({});
@@ -54,6 +59,15 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
     };
     loadCoins();
 	}, []);
+
+  useEffect(() => {
+		if (globalData.wallet == undefined) {
+      setGlobalData((prevData: any) => ({
+        ...prevData,
+        wallet: ""
+      }));
+    }
+	}, [globalData]);
 
   useEffect(() => {
 		if (selectCoin.symbol) {
@@ -79,6 +93,125 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
       loadCoins();
     }
 	}, [selectCoin]);
+
+  const selectWallet = (walletId: string) => {
+    setGlobalData((prevData: any) => ({
+      ...prevData,
+      wallet: walletId
+    }));
+    closeModal();
+  };
+
+  const connectMetamask = () => {
+    if (window.ethereum && window.ethereum.isMetaMask) {
+      const web3Instance = new Web3(window.ethereum);
+      // setWeb3(web3Instance);
+
+      window.ethereum.request({ method: 'eth_requestAccounts' })
+        .then(accounts => {
+          setGlobalData((prevData: any) => ({
+            ...prevData,
+            accountIdFromLogin: accounts[0]
+          }));
+        })
+        .catch(err => {
+          console.log(err.message);
+        });
+
+      window.ethereum.on('accountsChanged', (accounts) => {
+        setGlobalData((prevData: any) => ({
+          ...prevData,
+          accountIdFromLogin: accounts[0]
+        }));
+      });
+    } else {
+      console.log('MetaMask is not installed or not active');
+    }
+  };
+
+  const connectCoinbase = async () => {
+    try {
+      const coinbaseWallet = new CoinbaseWalletSDK({});
+      const DEFAULT_ETH_JSONRPC_URL = "https://mainnet.infura.io/v3/mwhorse"; // Replace with your Infura Project ID
+      const DEFAULT_CHAIN_ID = 1;
+  
+      const ethereum = coinbaseWallet.makeWeb3Provider();
+  
+      const web3 = new Web3(ethereum);
+  
+      await ethereum.enable();
+  
+      const accounts = await web3.eth.getAccounts();
+      setGlobalData((prevData: any) => ({
+        ...prevData,
+        accountIdFromLogin: accounts[0]
+      }));
+    } catch (error) {
+      console.log('Cant connect to wallet');
+    }
+  };
+
+  const connectExodus = async () => {
+    try {
+      const connector = new WalletConnectClient({
+        bridge: 'https://bridge.walletconnect.org', // WalletConnect bridge URL
+        qrcodeModal: QRCodeModal,
+      });
+
+      if (!connector.connected) {
+        await connector.createSession();
+        QRCodeModal.open(connector.uri, () => {
+          console.log('QR Code Modal closed');
+        });
+      }
+
+      connector.on('connect', (error, payload) => {
+        if (error) {
+          throw error;
+        }
+        const { accounts } = payload.params[0];
+        setGlobalData((prevData: any) => ({
+          ...prevData,
+          accountIdFromLogin: accounts[0]
+        }));
+      });
+
+      connector.on('session_update', (error, payload) => {
+        if (error) {
+          throw error;
+        }
+        const { accounts } = payload.params[0];
+        setGlobalData((prevData: any) => ({
+          ...prevData,
+          accountIdFromLogin: accounts[0]
+        }));
+      });
+    } catch (err) {
+      console.error('WalletConnect error:', err);
+    }
+  };
+
+  useEffect(() => {
+		if (globalData.wallet == 'metamask' || globalData.wallet == 'trustwallet') {
+      setGlobalData((prevData: any) => ({
+        ...prevData,
+        wallet: ""
+      }));
+      connectMetamask();
+    } else if (globalData.wallet == 'coinbase') {
+      setGlobalData((prevData: any) => ({
+        ...prevData,
+        wallet: ""
+      }));
+      connectCoinbase();
+    } else if (globalData.wallet == 'exodus') {
+      setGlobalData((prevData: any) => ({
+        ...prevData,
+        wallet: ""
+      }));
+      connectExodus();
+    }
+	}, [globalData.wallet]);
 
   return (
     <Modal
@@ -128,7 +261,7 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
           </p>
           <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
             {selectWalletList.map((wallet: any, index: number) => (
-              <div className='wallet-list-modal-wallets-wrapper' key={index}>
+              <div className='wallet-list-modal-wallets-wrapper' key={index} onClick={() => selectWallet(wallet.id)}>
                 <p style={{textAlign: 'center', margin: 0}}>
                   { wallet.id.toUpperCase() }
                 </p>
