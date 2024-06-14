@@ -135,7 +135,7 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
       const DEFAULT_ETH_JSONRPC_URL = "https://mainnet.infura.io/v3/mwhorse"; // Replace with your Infura Project ID
       const DEFAULT_CHAIN_ID = 1;
   
-      const ethereum = coinbaseWallet.makeWeb3Provider();
+      const ethereum:any = coinbaseWallet.makeWeb3Provider();
   
       const web3 = new Web3(ethereum);
   
