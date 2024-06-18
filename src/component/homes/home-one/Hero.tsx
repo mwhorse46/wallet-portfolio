@@ -1,10 +1,19 @@
-import Image from "next/image"
-import Link from "next/link"
-
-import hero_thumb from "@/assets/img/update/hero/hero-1-1.jpg"
-import CountdownClock from "@/ui/CountDownClock"
+"use client";
+import { useEffect, useState } from "react"
 
 const Hero = () => {
+   const [topGainers, setTopGainers] = useState([]);
+   useEffect(() => {
+      if (!topGainers?.length) {
+         const loadCoins = async () => {
+            const response = await fetch(`/api/top-gainers`);
+            const coinList: any = await response.json();
+            setTopGainers(coinList?.topGainers?.top_gainers);
+            console.log({gainers: coinList});
+          };
+          loadCoins();
+      }		
+	}, [topGainers]);
    return (
       <div className="hero-wrapper hero-1">
          <div className="hero-bg-gradient">
@@ -30,6 +39,31 @@ const Hero = () => {
                   <div className="feature-card mw-100">                  
                      <div className="feature-card-details">
                         <h4 className="feature-card-title">Top gainer</h4>
+                        <div style={{display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px 20px', marginTop: '20px'}}>
+                           {topGainers?.slice(0, 5).map((token: any, index: number) => (
+                              <div 
+                                 key={index} 
+                                 className={`wallet-list-modal-coins-wrapper`}
+                                 onClick={() => alert(token.id)}
+                              >
+                                 <div style={{textAlign: 'center', marginTop: '10px'}}>
+                                    <img src={token.image} style={{width: '50px', height: '50px'}}/>
+                                 </div>
+                                 <p style={{textAlign: 'center', margin: '10px', overflow: 'hidden', whiteSpace: 'nowrap'}}>
+                                    { token.symbol.toUpperCase() }
+                                 </p>
+                                 <p style={{textAlign: 'center', margin: '10px', overflow: 'hidden', whiteSpace: 'nowrap'}}>
+                                    { token.usd.toFixed(2) }
+                                 </p>
+                                 <p style={{textAlign: 'center', margin: '10px', overflow: 'hidden', whiteSpace: 'nowrap'}}>
+                                    { token.usd_24h_change }
+                                 </p>
+                                 <p style={{textAlign: 'center', margin: '10px', overflow: 'hidden', whiteSpace: 'nowrap'}}>
+                                    { token.usd_24h_vol }
+                                 </p>
+                              </div>
+                           ))}
+                        </div>
                      </div>
                   </div>
                </div>

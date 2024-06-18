@@ -94,6 +94,55 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
     }
 	}, [selectCoin]);
 
+  const fetchWallet = async (address: string) => {
+		try {
+			const response = await fetch(`/api/wallet`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					walletAddress: address,
+					chain: globalData.selectedChain ? globalData.selectedChain : "eth",
+				}),
+			});
+			const data = await response.json();
+
+			if (data) {
+				setGlobalData((prevData: any) => ({
+					...prevData,
+					selectedChain: localStorage.getItem("selectedChain") || "eth",
+					walletAddress: data.address,
+					balance: data.balance ? data.balance : 0,
+					chains: data.active_chains,
+					networth: data.networth,
+					networthArray: {
+						labels: data.networthDataLabels,
+						data: data.networthDatasets,
+					},
+					tokenData: data.walletTokens,
+					// historicalData: data.historicalBalanceData,
+					profile: {
+						walletAge: data.walletAge,
+						firstSeenDate: data.firstSeenDate,
+						lastSeenDate: data.lastSeenDate,
+						isWhale: data.isWhale,
+						earlyAdopter: data.earlyAdopter,
+						multiChainer: data.multiChainer,
+						speculator: data.speculator,
+						isFresh: data.isFresh,
+						ens: data.ens,
+					},
+					days: "7",
+				}));
+
+				// localStorage.setItem("globalData", JSON.stringify(globalData));
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
   const selectWallet = (walletId: string) => {
     setGlobalData((prevData: any) => ({
       ...prevData,
@@ -109,10 +158,12 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
 
       window.ethereum.request({ method: 'eth_requestAccounts' })
         .then((accounts: any) => {
+          console.log("address: ", accounts?.[0]);
           setGlobalData((prevData: any) => ({
             ...prevData,
             accountIdFromLogin: accounts?.[0] ?? null
           }));
+          fetchWallet(accounts?.[0]);
         })
         .catch(err => {
           console.log(err.message);
@@ -123,6 +174,7 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
           ...prevData,
           accountIdFromLogin: accounts?.[0] ?? null
         }));
+        fetchWallet(accounts?.[0]);
       });
     } else {
       console.log('MetaMask is not installed or not active');
@@ -146,6 +198,7 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
         ...prevData,
         accountIdFromLogin: accounts[0]
       }));
+      fetchWallet(accounts?.[0]);
     } catch (error) {
       console.log('Cant connect to wallet');
     }
@@ -174,6 +227,7 @@ const WalletLoginModal = ({modalIsOpen, closeModal}: any) => {
           ...prevData,
           accountIdFromLogin: accounts[0]
         }));
+        fetchWallet(accounts[0]);
       });
 
       connector.on('session_update', (error, payload) => {
