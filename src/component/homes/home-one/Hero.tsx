@@ -1,6 +1,7 @@
 "use client";
 import { AppContext } from "@/hooks/AppContext";
 import { useContext, useEffect, useState } from "react"
+import { Link } from "react-router-dom";
 
 const Hero = () => {
    const [topGainers, setTopGainers] = useState([]);
@@ -74,6 +75,59 @@ const Hero = () => {
 			fetchMarketData();
 		}
 	}, []);
+
+   const fetchWallet = async (address: string) => {
+		try {
+			const response = await fetch(`/api/wallet`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					walletAddress: address,
+					chain: globalData.selectedChain ? globalData.selectedChain : "eth",
+				}),
+			});
+			const data = await response.json();
+
+			if (data) {
+				setGlobalData((prevData: any) => ({
+					...prevData,
+					selectedChain: localStorage.getItem("selectedChain") || "eth",
+					walletAddress: data.address,
+					balance: data.balance ? data.balance : 0,
+					chains: data.active_chains,
+					networth: data.networth,
+					networthArray: {
+						labels: data.networthDataLabels,
+						data: data.networthDatasets,
+					},
+					tokenData: data.walletTokens,
+					// historicalData: data.historicalBalanceData,
+					profile: {
+						walletAge: data.walletAge,
+						firstSeenDate: data.firstSeenDate,
+						lastSeenDate: data.lastSeenDate,
+						isWhale: data.isWhale,
+						earlyAdopter: data.earlyAdopter,
+						multiChainer: data.multiChainer,
+						speculator: data.speculator,
+						isFresh: data.isFresh,
+						ens: data.ens,
+					},
+					days: "7",
+				}));
+
+				// localStorage.setItem("globalData", JSON.stringify(globalData));
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+   const loadMyWallet = () => {
+      fetchWallet(globalData.accountIdFromLogin);
+   };
 
    return (
       <div className="hero-wrapper hero-1">
@@ -209,7 +263,41 @@ const Hero = () => {
                <div className="col-lg-3">
                   <div className="feature-card mw-100">                  
                      <div className="feature-card-details">
-                        <h4 className="feature-card-title">Wallet tracker</h4>
+                        <h4 className="feature-card-title">Wallet tracker
+                        {globalData.accountIdFromLogin && (
+                           <button className="dashboard-wallettracker-my-button" onClick={() => loadMyWallet()}>My Wallet</button>
+                        )}                        
+                        </h4>
+                        {globalData.walletAddress && (
+                           <>
+                              <div className="dashboard-wallettracker-text-wrapper">
+                                 <div style={{textAlign: 'left', textWrap: 'nowrap'}}>
+                                    Address :
+                                 </div>
+                                 <div style={{textAlign: 'left', overflow: 'auto', wordWrap: 'break-word'}}>
+                                    {globalData.walletAddress}
+                                 </div>
+                              </div>
+                              <div className="dashboard-wallettracker-text-wrapper">
+                                 <div style={{textAlign: 'left', textWrap: 'nowrap'}}>
+                                    Total :
+                                 </div>
+                                 <div style={{textAlign: 'left', overflow: 'auto', wordWrap: 'break-word'}}>
+                                    {(globalData.balance / 1e18).toFixed(18)}
+                                 </div>
+                              </div>
+                              {globalData.tokenData.result?.map((token: any, index: number) => (
+                                 <div className="dashboard-wallettracker-text-wrapper" key={index}>
+                                    <div style={{textAlign: 'center'}}>
+                                       {token.symbol} : 
+                                    </div>
+                                    <div style={{textAlign: 'center'}}>
+                                       {token.usd_value.toFixed(2)} usd
+                                    </div>
+                                 </div>
+                              ))}
+                           </>
+                        )}                        
                      </div>
                   </div>
                </div>

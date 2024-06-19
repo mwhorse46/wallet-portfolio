@@ -6577,3 +6577,25 @@ label {
   width: 100%;
   margin-top: 10px;
 }
+
+.dashboard-wallettracker-text-wrapper {
+  border-radius: 8px;
+  border: 1px solid #303552; 
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 5px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.dashboard-wallettracker-my-button {
+  margin-left: 10px;
+  font-size: 14px;
+  padding: 7px;
+  background: transparent;
+  outline: none;
+  user-select: none;
+  line-height: 10px;
+  border-radius: 5px;
+}

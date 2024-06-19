@@ -77,6 +77,14 @@ const HeaderOne = () => {
 			console.log(err);
 		}
 	};
+
+	const setDisableMyAccount = () => {
+		setGlobalData((prevData: any) => ({
+			...prevData,
+			accountIdFromLogin: ""
+		}));
+	}
+
 	return (
 		<>
 			<header id="header" className="header-layout1">
@@ -116,9 +124,15 @@ const HeaderOne = () => {
 													/>
 												</li>
 												<li className="header-login">
-													<Link href={""} className="btn2" onClick={() => setIsOpenLoginModal(true)}>
-														LOGIN
-													</Link>
+													{!globalData.accountIdFromLogin ? (
+														<Link href={""} className="btn2" onClick={() => setIsOpenLoginModal(true)}>
+															LOGIN
+														</Link>
+													) : (
+														<Link href={""} className="btn2" onClick={() => setDisableMyAccount()}>
+															LOGOUT
+														</Link>
+													)}													
 												</li>
 											</ul>
 										</div>
