@@ -6551,7 +6551,7 @@ label {
   cursor: pointer;
 }
 
-.wallet-list-modal-coins-wrapper:hover, .wallet-list-modal-wallets-wrapper:hover, .wallet-list-modal-coins-wrapper.active, .wallet-list-modal-wallets-wrapper.active {
+.wallet-list-modal-coins-wrapper:hover, .wallet-list-modal-wallets-wrapper:hover, .wallet-list-modal-coins-wrapper.active, .wallet-list-modal-wallets-wrapper.active, .dashboard-favourite-add:hover {
   background-color: rgba(32, 33, 54, 0.8);
 }
 
@@ -6564,4 +6564,16 @@ label {
   align-items: center;
   padding: 10px;
   cursor: pointer;
+}
+
+.dashboard-favourite-add {
+  border-radius: 8px;
+  border: 1px solid #303552; 
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 5px;
+  width: 100%;
+  margin-top: 10px;
 }
