@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 const Hero = () => {
    const [topGainers, setTopGainers] = useState([]);
+   const [topLosers, setTopLosers] = useState([]);
    const [trending, setTrending] = useState([]);
    const { globalData, setGlobalData } = useContext(AppContext);
    const [searchNetwork, setSearchNetwork] = useState("");
@@ -14,6 +15,7 @@ const Hero = () => {
             const response = await fetch(`/api/top-gainers`);
             const coinList: any = await response.json();
             setTopGainers(coinList?.topGainers?.top_gainers);
+            setTopLosers(coinList?.topGainers?.top_losers);
             // console.log({gainers: coinList});
           };
           loadCoins();
@@ -144,8 +146,58 @@ const Hero = () => {
          <div className="container">
             <div className="hero-style1 pt-5">
                <div className="feature-card mw-100">                  
-                  <div className="feature-card-details">
+                  <div className="feature-card-details" style={{maxWidth: 'none', width: '100%'}}>
                      <h4 className="feature-card-title">Market stats & trending</h4>
+                     <div 
+                        style={{display: 'flex', alignItems: 'center', gap: '20px', justifyContent: 'center'}}
+                     >
+                        <div style={{textAlign: 'center', fontWeight: 'bold'}}>
+                           Coin
+                        </div>
+                        <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%', fontWeight: 'bold'}}>
+                           Symbol
+                        </p>
+                        <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%', fontWeight: 'bold'}}>
+                           Price(usd)
+                        </p>
+                        <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%', fontWeight: 'bold'}}>
+                           Market cap
+                        </p>
+                        <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%', fontWeight: 'bold'}}>
+                           Total volume
+                        </p>
+                        <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%', fontWeight: 'bold'}}>
+                           Market rank
+                        </p>
+                     </div>
+                     <div style={{display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px 20px', marginTop: '20px', flexDirection: 'column'}}>
+                        {trending?.slice(0, 5).map((token: any, index: number) => (
+                           <div 
+                              key={index} 
+                              style={{display: 'flex', alignItems: 'center', gap: '20px', justifyContent: 'center'}}
+                              onClick={() => console.log(token.item.id)}
+                           >
+                              <div style={{textAlign: 'center'}}>
+                                 <img src={token.item.thumb} style={{width: '30px', height: '30px'}}/>
+                              </div>
+                              <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%'}}>
+                                 { token.item.symbol.toUpperCase() }
+                              </p>
+                              <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%'}}>
+                                 { token.item.data.price.toFixed(2) }
+                              </p>
+                              <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%'}}>
+                                 { token.item.data.market_cap }
+                              </p>
+                              <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%'}}>
+                                 { token.item.data.total_volume }
+                              </p>
+                              <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%'}}>
+                                 { token.item.market_cap_rank }
+                              </p>
+                           </div>
+                        ))}
+                     </div>
                   </div>
                </div>
             </div>
@@ -186,22 +238,22 @@ const Hero = () => {
                <div className="col-lg-3">
                   <div className="feature-card mw-100">                  
                      <div className="feature-card-details" style={{width: '100%'}}>
-                        <h4 className="feature-card-title">Trending</h4>
+                        <h4 className="feature-card-title">Top losers</h4>
                         <div style={{display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px 20px', marginTop: '20px', flexDirection: 'column'}}>
-                           {trending?.slice(0, 5).map((token: any, index: number) => (
+                           {topLosers?.slice(0, 5).map((token: any, index: number) => (
                               <div 
                                  key={index} 
                                  style={{display: 'flex', alignItems: 'center', gap: '20px'}}
-                                 onClick={() => console.log(token.item.id)}
+                                 onClick={() => console.log(token.id)}
                               >
                                  <div style={{textAlign: 'center'}}>
-                                    <img src={token.item.thumb} style={{width: '30px', height: '30px'}}/>
+                                    <img src={token.image} style={{width: '30px', height: '30px'}}/>
                                  </div>
                                  <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '40%'}}>
-                                    { token.item.symbol.toUpperCase() }
+                                    { token.symbol.toUpperCase() }
                                  </p>
                                  <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap'}}>
-                                    { token.item.data.price.toFixed(2) }
+                                    { token.usd.toFixed(2) }
                                  </p>
                               </div>
                            ))}
