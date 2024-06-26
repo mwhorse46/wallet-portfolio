@@ -194,7 +194,7 @@ const Hero = () => {
                            Symbol
                         </p>
                         {Array.from({ length: 6 }, (_, index) => (
-                           <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '7%', fontWeight: 'bold'}}>
+                           <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '7%', fontWeight: 'bold'}} key={index}>
                               Price(usd)
                            </p>
                         ))}                        
@@ -225,7 +225,7 @@ const Hero = () => {
                                  { token.item.data.price.toFixed(2) }
                               </p>
                               {token.history?.slice().reverse().slice(0, 5).map((price: any, indexPrice: number) => (
-                                 <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '7%'}}>
+                                 <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '7%'}} key={index}>
                                     { price[1].toFixed(2) }
                                  </p>
                               ))}                              
