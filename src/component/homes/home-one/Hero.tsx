@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const Hero = () => {
    const [topGainers, setTopGainers] = useState([]);
    const [topLosers, setTopLosers] = useState([]);
-   const [trending, setTrending] = useState([]);
+   const [trending, setTrending] = useState<any[]>([]);
    const { globalData, setGlobalData } = useContext(AppContext);
    const [searchNetwork, setSearchNetwork] = useState("");
    useEffect(() => {
@@ -25,10 +25,17 @@ const Hero = () => {
    useEffect(() => {
       if (!trending?.length) {
          const loadCoins = async () => {
+            const trendingList = [];
             const response = await fetch(`/api/trending`);
             const coinList: any = await response.json();
-            setTrending(coinList?.trending?.coins);
-            console.log(coinList?.trending?.coins);
+            for (const coin of coinList?.trending?.coins.slice(0, 5)) {
+               const responseHistory = await fetch(`/api/coin-history?coinId=${coin.item.id}`);
+               const coinHistory: any = await responseHistory.json();
+               const trendingEach = {...coin, history: coinHistory.coinHistory.prices};
+               trendingList.push(trendingEach);
+            }
+            setTrending(trendingList);
+            console.log(trendingList);
           };
           loadCoins();
       }		
@@ -73,6 +80,35 @@ const Hero = () => {
 	};
 
 	useEffect(() => {
+      const timeInterval = setInterval(() => {
+         fetchMarketData();
+         let tokenNews = globalData.tokenNews ? [...globalData.tokenNews] : [];
+         let isNewsUpdated = false;
+
+         const sortedMarketCap = [...globalData.marketCap].sort((a, b) => 
+            Math.abs(a.market_cap_usd) - Math.abs(b.market_cap_usd)
+          );
+         for (const token of sortedMarketCap) {
+            if (Math.abs(token.usd_price_1hr_percent_change) > 2.0) {
+               isNewsUpdated = true;
+               tokenNews = [`${token.symbol.toUpperCase()}'s price changed with ${parseFloat(token.usd_price_1hr_percent_change).toFixed(2)}%`, ...tokenNews];
+               if (tokenNews.length >= 6) {
+                  tokenNews.pop();
+               }
+            }
+         }
+         if (isNewsUpdated)
+            setGlobalData((prevData: any) => ({
+               ...prevData,
+               tokenNews: tokenNews,
+            }));
+      }, 1000);
+      return () => {
+         clearInterval(timeInterval)
+      };
+	}, []);
+
+   useEffect(() => {
 		if (!globalData.marketDataLoaded) {
 			fetchMarketData();
 		}
@@ -154,19 +190,21 @@ const Hero = () => {
                         <div style={{textAlign: 'center', fontWeight: 'bold'}}>
                            Coin
                         </div>
-                        <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%', fontWeight: 'bold'}}>
+                        <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '7%', fontWeight: 'bold'}}>
                            Symbol
                         </p>
-                        <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%', fontWeight: 'bold'}}>
-                           Price(usd)
-                        </p>
+                        {Array.from({ length: 6 }, (_, index) => (
+                           <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '7%', fontWeight: 'bold'}}>
+                              Price(usd)
+                           </p>
+                        ))}                        
                         <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%', fontWeight: 'bold'}}>
                            Market cap
                         </p>
                         <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%', fontWeight: 'bold'}}>
                            Total volume
                         </p>
-                        <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%', fontWeight: 'bold'}}>
+                        <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '7%', fontWeight: 'bold'}}>
                            Market rank
                         </p>
                      </div>
@@ -180,19 +218,24 @@ const Hero = () => {
                               <div style={{textAlign: 'center'}}>
                                  <img src={token.item.thumb} style={{width: '30px', height: '30px'}}/>
                               </div>
-                              <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%'}}>
+                              <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '7%'}}>
                                  { token.item.symbol.toUpperCase() }
                               </p>
-                              <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%'}}>
+                              <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '7%'}}>
                                  { token.item.data.price.toFixed(2) }
                               </p>
+                              {token.history?.slice().reverse().slice(0, 5).map((price: any, indexPrice: number) => (
+                                 <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '7%'}}>
+                                    { price[1].toFixed(2) }
+                                 </p>
+                              ))}                              
                               <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%'}}>
                                  { token.item.data.market_cap }
                               </p>
                               <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%'}}>
                                  { token.item.data.total_volume }
                               </p>
-                              <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '15%'}}>
+                              <p style={{textAlign: 'center', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', width: '7%'}}>
                                  { token.item.market_cap_rank }
                               </p>
                            </div>
@@ -357,6 +400,11 @@ const Hero = () => {
                   <div className="feature-card mw-100">                  
                      <div className="feature-card-details">
                         <h4 className="feature-card-title">Token alerts</h4>
+                        {globalData.tokenNews?.map((news: any, index: number) => (
+                           <p style={{textAlign: 'left', marginBottom: '10px', whiteSpace: 'nowrap'}} key={index}>
+                              { news }
+                           </p>
+                        ))}
                      </div>
                   </div>
                </div>
