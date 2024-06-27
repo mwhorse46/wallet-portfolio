@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import UseSticky from "../../hooks/UseSticky";
 import Image from "next/image";
 import NavMenu from "./Menu/NavMenu";
@@ -18,6 +18,11 @@ const HeaderOne = () => {
 	const { globalData, setGlobalData } = useContext(AppContext);
 	const [address, setAddress] = useState("");
 	const [isOpenLoginModal, setIsOpenLoginModal] = useState(false);
+	const [isClient, setIsClient] = useState(false);
+
+	useEffect(() => {
+        setIsClient(true);
+    }, []);
 
 	const handleInputChange = (e: any) => {
 		setAddress(e.target.value);
@@ -124,15 +129,17 @@ const HeaderOne = () => {
 													/>
 												</li>
 												<li className="header-login">
-													{!globalData.accountIdFromLogin ? (
-														<Link href={""} className="btn2" onClick={() => setIsOpenLoginModal(true)}>
-															LOGIN
-														</Link>
-													) : (
-														<Link href={""} className="btn2" onClick={() => setDisableMyAccount()}>
-															LOGOUT
-														</Link>
-													)}													
+													{isClient && (
+														!globalData.accountIdFromLogin ? (
+															<Link href={""} className="btn2" onClick={() => setIsOpenLoginModal(true)}>
+																LOGIN
+															</Link>
+														) : (
+															<Link href={""} className="btn2" onClick={() => setDisableMyAccount()}>
+																LOGOUT
+															</Link>
+														)
+													)}												
 												</li>
 											</ul>
 										</div>
