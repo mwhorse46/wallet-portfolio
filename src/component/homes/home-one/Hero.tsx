@@ -421,7 +421,7 @@ const Hero = () => {
                                  <p style={{textAlign: 'left', marginBottom: '10px', whiteSpace: 'nowrap'}} key={`${index}_tokenalert`}>
                                     {news.symbol && (
                                        <>
-                                          <span style={{fontWeight: 'bold'}}>{news.symbol?.toUpperCase()}</span>'s price changed with 
+                                          <span style={{fontWeight: 'bold'}}>{news.symbol?.toUpperCase()}</span>&apos;s price changed with 
                                           <span style={{fontWeight: 'bold'}}> {parseFloat(news.percent).toFixed(2)}</span>%.
                                        </>
                                     )}
